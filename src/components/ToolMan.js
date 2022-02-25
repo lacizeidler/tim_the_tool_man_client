@@ -1,17 +1,17 @@
 import React from "react"
 import { Route, Redirect } from "react-router-dom"
 import { ApplicationViews } from "./ApplicationViews"
-import { NavBar } from "./nav/NavBar"
 import { Login } from "./auth/Login"
 import { Register } from "./auth/Register"
+import NavTabs from "./nav/NavBar"
 
-export const LevelUp = () => (
+export const ToolMan = () => (
     <>
         <Route render={() => {
-            if (localStorage.getItem("lu_token")) {
+            if (localStorage.getItem("tm_token")) {
                 return <>
                     <Route>
-                        <NavBar />
+                        <NavTabs />
                         <ApplicationViews />
                     </Route>
                 </>

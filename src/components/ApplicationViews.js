@@ -1,13 +1,19 @@
 import React from "react"
 import { Route } from "react-router-dom"
+import RequestForm from "./requests/request_form"
+import RequestList from "./requests/request_list"
 
 export const ApplicationViews = () => {
     return <>
         <main style={{
-            margin: "5rem 2rem",
-            backgroundColor: "lightgoldenrodyellow"
+            margin: "5rem 2rem"
         }}>
-            Application views
+            <Route exact path ="/requests">
+                <RequestList />
+            </Route>
+            <Route exact path ="/requests/new">
+                <RequestForm/>
+            </Route>
         </main>
     </>
 }

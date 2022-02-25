@@ -1,38 +1,52 @@
-import React from "react"
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import "./NavBar.css"
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
-export const NavBar = () => {
-    const history = useHistory()
+function LinkTab(props) {
     return (
-        <ul className="navbar">
-            <li className="navbar__item">
-                Navigation link
-            </li>
-            <li className="navbar__item">
-                Navigation link
-            </li>
-            <li className="navbar__item">
-                Navigation link
-            </li>
-            {
-                (localStorage.getItem("lu_token") !== null) ?
-                    <li className="nav-item">
-                        <button className="nav-link fakeLink"
-                            onClick={() => {
-                                localStorage.removeItem("lu_token")
-                                history.push({ pathname: "/" })
-                            }}
-                        >Logout</button>
-                    </li> :
-                    <>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/login">Login</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/register">Register</Link>
-                        </li>
-                    </>
-            }        </ul>
-    )
+        <Tab
+            component="a"
+            onClick={(event) => {
+                event.preventDefault();
+            }}
+            {...props}
+        />
+    );
+}
+
+export default function NavTabs() {
+    const history = useHistory()
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    return (
+        <Box sx={{ width: "100%" }}>
+            <Tabs value={value} onChange={handleChange} aria-label="nav tabs example">
+                <LinkTab label="Home" href="/" />
+                <LinkTab label="Requests" href="/requests" />
+                <LinkTab label="Form" href="/requests/new" />
+                <LinkTab label="About" href="/" />
+                {
+                    (localStorage.getItem("tm_token") !== null) ?
+                        <LinkTab 
+                        label="Logout"
+                        onClick={() => {
+                            localStorage.removeItem("tm_token")
+                            history.push({ pathname: "/" })
+                        }}
+                        /> :
+                        <>
+                            <LinkTab label="Login" href="/login" />
+                            <LinkTab label="Register" href="/register" />
+                        </>
+                }
+            </Tabs>
+        </Box>
+    );
 }
