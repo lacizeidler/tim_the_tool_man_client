@@ -28,13 +28,13 @@ export default function NavTabs() {
     return (
         <Box sx={{ width: "100%" }}>
             <Tabs value={value} onChange={handleChange} aria-label="nav tabs example">
-                <LinkTab label="Home" href="/" />
-                <LinkTab label="Requests" href="/requests" />
-                <LinkTab label="Form" href="/requests/new" />
-                <LinkTab label="About" href="/" />
+                <Tab label="Home" href="/" />
+                <Tab label="Requests" href="/requests" />
+                <Tab label="Form" href="/requests/new" />
+                <Tab label="About" href="/" />
                 {
                     (localStorage.getItem("tm_token") !== null) ?
-                        <LinkTab 
+                        <Tab 
                         label="Logout"
                         onClick={() => {
                             localStorage.removeItem("tm_token")
@@ -42,8 +42,8 @@ export default function NavTabs() {
                         }}
                         /> :
                         <>
-                            <LinkTab label="Login" href="/login" />
-                            <LinkTab label="Register" href="/register" />
+                            <Tab label="Login" href="/login" />
+                            <Tab label="Register" href="/register" />
                         </>
                 }
             </Tabs>
