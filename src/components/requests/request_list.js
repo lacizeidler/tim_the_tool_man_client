@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { getRequests } from './request_manager';
+import Button from '@mui/material/Button';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function RequestList() {
     const [requests, modifyRequests] = React.useState([])
-    const [expanded, setExpanded] = React.useState(false);
+    const history = useHistory()
 
     React.useEffect(
         () => {
@@ -17,6 +17,15 @@ export default function RequestList() {
         },
         []
     )
+
+    const deleteRequest = (id) => {
+        fetch(`http://localhost:8000/requests/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("tm_token")}`
+            }
+        })
+    }
 
 
     return (
@@ -42,6 +51,45 @@ export default function RequestList() {
                                 <Typography paragraph>
                                     Label: {request.status.label}
                                 </Typography>
+                                <Button
+                                    key={`/requests/editstatus/${request.id}`}
+                                    onClick={
+                                        () => {
+                                            history.push(`/requests/editstatus/${request.id}`)
+                                        }
+                                    }
+                                    value={request.id}
+                                >
+                                    Update Status
+                                </Button>
+                                <Button
+                                    onClick={
+                                        () => {
+                                            deleteRequest(parseInt(request.id))
+                                            history.push("/requests")
+                                        }
+                                    }
+                                >Delete Request</Button>
+                                <Button
+                                    key={`/message_list/${request.id}`}
+                                    onClick={
+                                        () => {
+                                            history.push(`/message_list/${request.id}`)
+                                        }
+                                    }
+                                    value={request.id}
+                                >
+                                    Messages
+                                </Button>
+                                <Button
+                                    onClick={
+                                        () => {
+                                            history.push(`/requests/edit/${request.id}`)
+                                        }
+                                    }
+                                >
+                                    Edit
+                                </Button>
                             </CardContent>
                         </Card>
                     </div>
