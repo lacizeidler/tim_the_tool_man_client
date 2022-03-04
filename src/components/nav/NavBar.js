@@ -31,7 +31,6 @@ export default function NavTabs() {
                 <Tab label="Home" href="/" />
                 <Tab label="Requests" href="/requests" />
                 <Tab label="Form" href="/requests/new" />
-                <Tab label="About" href="/" />
                 {
                     (localStorage.getItem("tm_token") !== null) ?
                         <Tab 

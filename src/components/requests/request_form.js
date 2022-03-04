@@ -1,30 +1,26 @@
 import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { getTopics } from './request_manager';
 import Input from '@mui/material/Input'
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import { NativeSelect } from '@mui/material';
 
 
 export default function RequestForm() {
   const history = useHistory()
   const [topics, modifyTopics] = React.useState([])
-  const currentUser = parseInt(localStorage.getItem("tm_token"))
   const [request, modifyRequest] = React.useState({
     description: "",
     topic_id: 0,
     budget: "",
-    status_id: 0
+    status_id: 1,
+    read: 0
   })
 
   React.useEffect(
@@ -42,7 +38,8 @@ export default function RequestForm() {
       user_id: parseInt(localStorage.getItem("tm_token")),
       timestamp: Date.now(),
       budget: request.budget,
-      status_id: request.status_id
+      status_id: request.status_id,
+      read: request.read
     }
 
     const fetchOption = {
@@ -53,78 +50,74 @@ export default function RequestForm() {
       },
       body: JSON.stringify(newRequest)
     }
-    return fetch(`http://localhost:8088/requests`, fetchOption)
+    return fetch(`http://localhost:8000/requests`, fetchOption)
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: "90%" }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>New Request</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableCell>
-              <Input
-                style={{ width: "100%" }}
-                onChange={
-                  (evt) => {
-                    const copy = { ...request }
-                    copy.description = evt.target.value
-                    modifyRequest(copy)
-                  }
-                }
-                placeholder="Description..."
-                type="text"
-                required autoFocus
-              />
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <Input
-                onChange={
-                  (evt) => {
-                    const copy = { ...request }
-                    copy.budget = evt.target.value
-                    modifyRequest(copy)
-                  }
-                }
-                placeholder="What's your budget?"
-                type="text"
-                required autoFocus
-              />
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <Box sx={{ minWidth: "80%" }}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Topic</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Topic"
+    <div key={request.id} style={{ marginBottom: "3%" }}>
+      <Card sx={{ maxWidth: "70%", marginRight: "15%", marginLeft: "15%" }}>
+        <h2>New Request</h2>
+        <CardContent>
+          <div>
+          <Input
+            style={{ width: "100%" }}
+            onChange={
+              (evt) => {
+                const copy = { ...request }
+                copy.description = evt.target.value
+                modifyRequest(copy)
+              }
+            }
+            placeholder="Description..."
+            type="text"
+            required autoFocus
+          />
+          </div>
+          <div>
+          <Input
+            onChange={
+              (evt) => {
+                const copy = { ...request }
+                copy.budget = evt.target.value
+                modifyRequest(copy)
+              }
+            }
+            placeholder="What's your budget?"
+            type="text"
+            required autoFocus
+          />
+          </div>
+          <div>
+          <NativeSelect className="topic__select"
                     onChange={
-                      (evt) => {
-                        const copy = { ...request }
-                        copy.topic_id = parseInt(evt.target.value)
-                        modifyRequest(copy)
-                      }
+                        (evt) => {
+                            const copy = { ...request }
+                            copy.topic_id = parseInt(evt.target.value)
+                            modifyRequest(copy)
+                        }
                     }
-                  >
+                >
+                    <option className="topic__option" value={0}>Select a topic...</option>
                     {
-                      topics.map(topic => <MenuItem className="topic__option" key={`topic--${topic.id}`} value={topic.id}>{topic.label}</MenuItem>)
+                        topics.map(topic => <option className="topic__option" key={`topic--${topic.id}`} value={topic.id}>{topic.label}</option>)
                     }
-                  </Select>
-                </FormControl>
-              </Box>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+                </NativeSelect>
+          </div>
+          <div>
+          <Button
+            type="submit"
+            onClick={
+              () => {
+                SubmitForm()
+                history.push(`/requests`)
+              }
+            }
+          >
+            Submit
+          </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
