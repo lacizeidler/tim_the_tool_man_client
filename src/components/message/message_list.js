@@ -24,7 +24,7 @@ export const MessageList = () => {
     )
     return (
         <>
-            {
+            {/* {
                 messages.map(
                     message => {
                         const findUserName = customers.find(customer => {
@@ -37,7 +37,7 @@ export const MessageList = () => {
                         </div>
                     }
                 )
-            }
+            } */}
             <MessageForm modifyMessages={modifyMessages} />
         </>
     )

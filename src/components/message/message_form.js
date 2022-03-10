@@ -12,11 +12,11 @@ import CardContent from '@mui/material/CardContent';
 //*When React sees an element representing a user-defined component, it passes JSX attributes and children to this component as a single object. We call this object “props”.
 export const MessageForm = ({ modifyMessages }) => {
     const { requestId } = useParams()
-    const currentUser = parseInt(localStorage.getItem("toolMan_customer"))
+    const currentUser = parseInt(localStorage.getItem("tm_token"))
     const [message, modifyMessage] = useState({
         message: "",
-        requestId: requestId,
-        read: false
+        request_id: requestId,
+        read: 0
     })
 
     const SendMessage = (event) => {
@@ -24,8 +24,8 @@ export const MessageForm = ({ modifyMessages }) => {
         event.preventDefault()
         const newMessage = {
             message: message.message,
-            requestId: parseInt(message.requestId),
-            senderId: currentUser,
+            request_id: parseInt(message.requestId),
+            sender_id: currentUser,
             timestamp: Date.now(),
             read: message.read
         }
@@ -53,7 +53,7 @@ export const MessageForm = ({ modifyMessages }) => {
         <>
             <div style={{ marginBottom: "3%" }}>
                 <Card sx={{ maxWidth: "70%", marginRight: "15%", marginLeft: "15%" }}>
-                    <h2>New Request</h2>
+                    <h2>New Message</h2>
                     <CardContent>
                         <div>
                             <Input
@@ -73,7 +73,7 @@ export const MessageForm = ({ modifyMessages }) => {
                         <div>
                             <Button
                                 onClick={SendMessage}>
-                                Submit
+                                Send
                             </Button>
                         </div>
                     </CardContent>
