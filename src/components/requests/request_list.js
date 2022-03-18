@@ -40,7 +40,7 @@ export default function RequestList() {
     return (
         <>
             {
-                requests.map(request =>
+                requests?.map(request =>
                     currentCustomer.user_id === 1
                         ? <div key={request.id} style={{ "margin": "1%" }}>
                             <Card>
